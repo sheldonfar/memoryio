@@ -8,5 +8,15 @@ export default createTheme({
   },
   typography: {
     fontSize: 16,
+    body1: {
+      color: '#304859',
+      fontSize: 24,
+      fontWeight: 700,
+    },
+    body2: {
+      color: '#7191a5',
+      fontSize: 15,
+      fontWeight: 700,
+    },
   },
 })

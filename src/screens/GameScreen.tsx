@@ -1,13 +1,14 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import makeStyles from '@mui/styles/makeStyles'
 import { Grid, Typography, Button, Modal, Theme } from '@mui/material'
 
 import { GameSettings } from '../hooks/useGameSettings'
+import { useTimeout } from '../hooks/timers'
+import useTimer from '../hooks/useTimer'
+import useNodeWidth from '../hooks/useNodeWidth'
 import { splitEvery } from '../utils'
-import { useTimeout } from '../utils/timers'
 import { generateTiles, Tile, tilesEqual, tilesMatch } from '../utils/tileUtils'
-import { useTimer } from '../hooks/useTimer'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -18,7 +19,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '50%',
     backgroundColor: '#304859',
     color: 'white',
+    fontSize: 70,
     cursor: 'pointer',
+    transition: 'all 185ms ease-in-out',
   },
   tileSelected: {
     backgroundColor: '#fda214',
@@ -59,7 +62,6 @@ const GameScreen = ({
 
   const { gridSize } = gameSettings.value
 
-  const [containerWidth, setContainerWidth] = useState(0)
   const [firstSelectedTile, setFirstSelectedTile] = useState()
   const [secondSelectedTile, setSecondSelectedTile] = useState()
   const [guessedTiles, setGuessedTiles] = useState<Tile[]>([])
@@ -68,15 +70,10 @@ const GameScreen = ({
   const [moveCount, setMoveCount] = useState(0)
   const [winModalOpen, setWinModalOpen] = useState(false)
 
+  const containerWidth = useNodeWidth(containerRef)
   const timer = useTimer()
 
   const rows = splitEvery(gridSize[0], tiles)
-
-  useLayoutEffect(() => {
-    if (containerRef.current) {
-      setContainerWidth(containerRef.current.offsetWidth)
-    }
-  }, [])
 
   useTimeout(() => {
     if (secondSelectedTile) {
@@ -132,25 +129,25 @@ const GameScreen = ({
   return (
     <>
       <Grid container item alignItems="center" className={classes.root} direction="column" justifyContent="center" p={3}>
-        <Grid container item justifyContent="space-between" wrap="nowrap">
+        <Grid container item direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" wrap="nowrap">
           <Grid item>
             <Typography>MemoryIO</Typography>
           </Grid>
           <Grid container item columnSpacing={2} width="auto">
             <Grid item>
-              <Button onClick={handleRestart}>Restart</Button>
+              <Button variant="contained" onClick={handleRestart}>Restart</Button>
             </Grid>
             <Grid item>
-              <Button onClick={handleNewGame}>New Game</Button>
+              <Button variant="contained" onClick={handleNewGame}>New Game</Button>
             </Grid>
           </Grid>
         </Grid>
-        <Grid container item direction="column" mt={2} ref={containerRef} rowSpacing={2} width="800px">
+        <Grid container direction="column" maxWidth="700px" mt={2} ref={containerRef} rowSpacing={2}>
           {rows.map((row, rowIndex) => (
           // eslint-disable-next-line react/no-array-index-key
             <Grid container item columnSpacing={2} key={rowIndex} wrap="nowrap">
               {row.map((tile, index) => {
-                const size = containerWidth / gridSize[1]
+                const size = (containerWidth / gridSize[1] - 16)
                 const isFirstTile = tilesEqual(firstSelectedTile, tile)
                 const isSecondTile = tilesEqual(secondSelectedTile, tile)
                 const guessed = guessedTiles.some(guessedTile => tilesEqual(guessedTile, tile))
@@ -171,21 +168,21 @@ const GameScreen = ({
                         }
                       }}
                     >
-                      <Typography align="center">{tile.content}</Typography>
+                      {(selected || guessed) && tile.content}
                     </Grid>
                   </Grid>
                 )
               })}
             </Grid>
           ))}
-          <Grid container item justifyContent="space-between">
-            <Grid item>
-              <Typography>Time</Typography>
-              <Typography>{timer.value}</Typography>
+          <Grid container item justifyContent="space-between" mt={2} wrap="nowrap">
+            <Grid container item className={classes.infoContainer} direction="column" px={6} py={1} width="auto">
+              <Typography align="center" variant="body2">Time</Typography>
+              <Typography align="center" variant="body1">{timer.value}</Typography>
             </Grid>
-            <Grid item>
-              <Typography>Moves</Typography>
-              <Typography>{moveCount}</Typography>
+            <Grid container item className={classes.infoContainer} direction="column" px={6} py={1} width="auto">
+              <Typography align="center" variant="body2">Moves</Typography>
+              <Typography align="center" variant="body1">{moveCount}</Typography>
             </Grid>
           </Grid>
         </Grid>
@@ -238,10 +235,10 @@ const GameScreen = ({
 
           <Grid container item columnSpacing={2} justifyContent="space-between" mt={2} width="auto">
             <Grid item>
-              <Button onClick={handleRestart}>Restart</Button>
+              <Button variant="contained" onClick={handleRestart}>Restart</Button>
             </Grid>
             <Grid item>
-              <Button onClick={handleNewGame}>New Game</Button>
+              <Button variant="contained" onClick={handleNewGame}>New Game</Button>
             </Grid>
           </Grid>
         </Grid>

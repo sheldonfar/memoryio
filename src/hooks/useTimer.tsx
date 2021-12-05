@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-export const useTimer = () => {
+const useTimer = () => {
   const [value, setValue] = useState('0:00')
   const dataRef = useRef<{ intervalHandle?: NodeJS.Timeout; tickCount: number }>({
     tickCount: 0,
@@ -28,3 +28,5 @@ export const useTimer = () => {
     },
   }
 }
+
+export default useTimer

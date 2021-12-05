@@ -17,7 +17,7 @@ const generateNumbers = count => Array.from(Array(count)).map((_, index) => ({
 
 const generateIcons = count => TileIcons.slice(0, count).map((Icon, index) => ({
   id: index.toString(),
-  content: <Icon fontSize="large" />,
+  content: <Icon fontSize="inherit" />,
 }))
 
 const themeGenerators = {
