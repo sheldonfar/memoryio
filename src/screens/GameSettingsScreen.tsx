@@ -30,7 +30,7 @@ const GameSettingsScreen = ({
   return (
     <Grid container item alignItems="center" className={classes.root} direction="column" justifyContent="center" p={3}>
       <Typography mb={2}>MemoryIO</Typography>
-      <Paper>
+      <Paper elevation={3}>
         <Grid container item direction="column" p={2} rowSpacing={2}>
           <SettingsSection
             selectedValue={gameSettings.value.theme}
@@ -51,7 +51,7 @@ const GameSettingsScreen = ({
             onSelect={value => gameSettings.setGridSize(value)}
           />
           <Grid item>
-            <Button onClick={handleStart}>Start</Button>
+            <Button variant="contained" onClick={handleStart}>Start</Button>
           </Grid>
         </Grid>
       </Paper>

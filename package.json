@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "eslint-config-airbnb-typescript": "^16.1.0",
-    "eslint-plugin-i18n-json": "^3.1.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-react-hooks": "^4.3.0"
