@@ -1,0 +1,101 @@
+{
+  "root": true,
+  "extends": [
+    "plugin:import/recommended",
+    "airbnb-typescript",
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "sourceType": "module",
+    "project": ["./tsconfig.json"]
+  },
+  "plugins": ["jest", "jsx-a11y", "react", "react-hooks", "@typescript-eslint/eslint-plugin"],
+  "rules": {
+    "curly": ["error", "all"],
+    "prefer-arrow-callback": [
+      "error",
+      {
+        "allowNamedFunctions": true
+      }
+    ],
+    "arrow-parens": ["error", "as-needed"],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "always-multiline",
+        "imports": "always-multiline",
+        "objects": "always-multiline"
+      }
+    ],
+    "max-len": ["error", { "code": 130 }],
+    "no-console": "error",
+    "no-implicit-coercion": ["error", { "boolean": true, "number": true, "string": true }],
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
+    "object-curly-newline": ["error", {
+      "ObjectExpression": { "multiline": true, "minProperties": 7, "consistent": true },
+      "ObjectPattern":  { "multiline": true, "minProperties": 7, "consistent": true },
+      "ImportDeclaration": { "multiline": true, "minProperties": 7, "consistent": true },
+      "ExportDeclaration": { "multiline": true, "minProperties": 5, "consistent": true }
+    }],
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-indent": [2, 2],
+    "react/jsx-no-duplicate-props": ["error"],
+    "react/jsx-sort-props": ["error", {
+      "callbacksLast": true,
+      "shorthandFirst": true
+    }],
+    "react/jsx-wrap-multilines": [
+      "error",
+      {
+        "arrow": "parens-new-line",
+        "logical": "parens-new-line",
+        "assignment": "parens-new-line",
+        "declaration": "parens-new-line",
+        "return": "parens-new-line"
+      }
+    ],
+    "react/prefer-stateless-function": ["error", { "ignorePureComponents": true }],
+    "indent": ["error", 2, { "SwitchCase": 1, "ignoredNodes": ["TemplateLiteral"] }],
+    "semi": [2, "never"],
+    "jsx-quotes": "error",
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "**/*.spec.js", "src/setupTests.js"]}],
+    "react-hooks/rules-of-hooks": "error",
+    "jsx-a11y/alt-text": [ "error", {
+      "elements": [ "img" ],
+      "img": ["Image"]
+    }],
+    "no-mixed-operators": ["error", {
+      "groups": [
+        ["%", "**"],
+        ["%", "+"],
+        ["%", "-"],
+        ["%", "*"],
+        ["%", "/"],
+        ["&", "|", "<<", ">>", ">>>"],
+        ["==", "!=", "===", "!=="],
+        ["&&", "||"]
+      ],
+      "allowSamePrecedence": false
+    }],
+    "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
+    "max-lines": ["warn", { "max": 1000 }],
+    "max-params": ["error", 5],
+    "@typescript-eslint/semi": "off",
+    "react/forbid-component-props": "off"
+  },
+  "env": {
+    "browser": true,
+    "jest/globals": true
+  }
+}

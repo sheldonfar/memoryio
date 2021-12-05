@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.0",
+    "@mui/material": "^5.2.2",
+    "@mui/styles": "^5.2.2",
     "@testing-library/jest-dom": "^5.16.0",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -16,17 +21,20 @@
     "react-scripts": "4.0.3",
     "typescript": "^4.5.2"
   },
+  "devDependencies": {
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-plugin-i18n-json": "^3.1.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jest": "^25.3.0",
+    "eslint-plugin-react-hooks": "^4.3.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "eject": "react-scripts eject",
+    "lint": "eslint src --color --format table --cache --quiet",
+    "lint:fix": "npm run lint -- --fix"
   },
   "browserslist": {
     "production": [
