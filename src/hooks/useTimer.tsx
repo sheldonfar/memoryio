@@ -22,5 +22,9 @@ export const useTimer = () => {
       }
       dataRef.current.intervalHandle = undefined
     },
+    reset: () => {
+      dataRef.current.tickCount = 0
+      setValue('0:00')
+    },
   }
 }
