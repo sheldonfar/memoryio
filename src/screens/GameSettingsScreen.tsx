@@ -23,7 +23,7 @@ const GameSettingsScreen = ({
     <Grid container item alignItems="center" direction="column" justifyContent="center" p={3}>
       <Typography mb={2}>MemoryIO</Typography>
       <Paper elevation={3}>
-        <Grid container item direction="column" p={2} rowSpacing={2}>
+        <Grid container item direction="column" minWidth="300px" px={4} py={2} rowSpacing={2}>
           <SettingsSection
             selectedValue={gameSettings.value.theme}
             title="Select theme"
