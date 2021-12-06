@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
 
-const createScheduling = (func, clearFunc) => (callback, delay) => {
+const createScheduling = (func: Function, clearFunc: Function) => (callback: Function, delay: number | null) => {
   const savedCallback = useRef<Function>()
 
   useEffect(() => {
     savedCallback.current = callback
-  }, [callback])
+  }, [callback])  
 
   useEffect(() => {
     if (delay !== null) {

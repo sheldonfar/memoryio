@@ -10,12 +10,12 @@ export interface Tile {
   content: ReactNode
 }
 
-const generateNumbers = count => Array.from(Array(count)).map((_, index) => ({
+const generateNumbers = (count: number) => Array.from(Array(count)).map((_, index) => ({
   id: index.toString(),
   content: index,
 }))
 
-const generateIcons = count => TileIcons.slice(0, count).map((Icon, index) => ({
+const generateIcons = (count: number) => TileIcons.slice(0, count).map((Icon, index) => ({
   id: index.toString(),
   content: <Icon fontSize="inherit" />,
 }))
@@ -38,9 +38,9 @@ export const generateTiles = (gameSettings: GameSettings): Tile[] => {
   }))
 }
 
-export const tilesMatch = (tileOne, tileTwo): boolean => tileOne?.id === tileTwo?.id
+export const tilesMatch = (tileOne?:  Tile, tileTwo?: Tile): boolean => tileOne?.id === tileTwo?.id
 
-export const tilesEqual = (tileOne, tileTwo): boolean => {
+export const tilesEqual = (tileOne?: Tile, tileTwo?: Tile): boolean => {
   const indexesEqual = tileOne?.index === tileTwo?.index
 
   return tilesMatch(tileOne, tileTwo) && indexesEqual

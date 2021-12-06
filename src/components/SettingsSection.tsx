@@ -8,15 +8,17 @@ const useStyles = makeStyles(() => ({
   },
 }), { name: 'SettingsSection' })
 
-const parseValue = value => {
+type Value = string | number | any[]
+
+const parseValue = (value: Value): string | number => {
   return Array.isArray(value)
     ? value.join('x')
     : value
 }
 interface SettingsSectionProps {
   title: string;
-  values: any[] | readonly any[];
-  selectedValue: any;
+  values: Value[];
+  selectedValue: Value;
   onSelect: ((value: any) => void);
 }
 
@@ -37,10 +39,9 @@ const SettingsSection = ({
         {values.map(value => {
           const parsedValue = parseValue(value)
           return (
-            <Grid item key={value}>
+            <Grid item key={parsedValue}>
               <ToggleButton
                 className={classes.button}
-                key={value}
                 selected={parsedSelectedValue === parsedValue}
                 value={value}
                 onChange={() => onSelect(value)}

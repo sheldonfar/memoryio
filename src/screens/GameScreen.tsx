@@ -57,8 +57,8 @@ const GameScreen = ({
 
   const { gridSize, playerCount } = gameSettings.value
 
-  const [firstSelectedTile, setFirstSelectedTile] = useState()
-  const [secondSelectedTile, setSecondSelectedTile] = useState()
+  const [firstSelectedTile, setFirstSelectedTile] = useState<Tile>()
+  const [secondSelectedTile, setSecondSelectedTile] = useState<Tile>()
   const [guessedTiles, setGuessedTiles] = useState<Tile[]>([])
   const [tiles, setTiles] = useState(generateTiles(gameSettings))
   const [gameStarted, setGameStarted] = useState(false)
@@ -105,7 +105,7 @@ const GameScreen = ({
     navigate('/')
   }
 
-  const handleSelect = tile => {
+  const handleSelect = (tile: Tile) => {
     if (secondSelectedTile) {
       // you are clicking too fast my boy
       return

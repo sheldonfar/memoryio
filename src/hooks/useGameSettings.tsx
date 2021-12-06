@@ -5,22 +5,22 @@ export enum Theme {
   Icons = 'Icons',
 }
 
-export const GridSizes = [[4, 4], [6, 6]] as const
-export type GridSize = typeof GridSizes[number];
-export const PlayerCounts = [1, 2, 3, 4] as const
-export type PlayerCount = typeof PlayerCounts[number];
+export type GridSize = [number, number]
+export const GridSizes: GridSize[] = [[4, 4], [6, 6]]
+
+export const PlayerCounts: number[] = [1, 2, 3, 4]
 export interface Settings {
-  theme: Theme;
-  gridSize: GridSize;
-  playerCount: PlayerCount
+  theme: Theme
+  gridSize: GridSize
+  playerCount: number
 }
 export interface GameSettings {
-  value: Settings;
-  setTheme: (theme: Theme) => void;
-  setGridSize: (gridSize: GridSize) => void;
-  setPlayerCount: (playerCount: PlayerCount) => void;
-  save: () => void;
-  load: () => void,
+  value: Settings
+  setTheme: (theme: Theme) => void
+  setGridSize: (gridSize: GridSize) => void
+  setPlayerCount: (playerCount: number) => void
+  save: () => void
+  load: () => void
 }
 
 const initialSettings: Settings = {

@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect } from 'react'
 
-const useNodeWidth = ref => {
+const useNodeWidth = (ref: React.RefObject<HTMLDivElement>) => {
   const [width, setWidth] = useState(0)
 
   const handleResize = (entries: ResizeObserverEntry[]) => {
