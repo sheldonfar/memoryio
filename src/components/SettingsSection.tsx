@@ -34,7 +34,7 @@ const SettingsSection = ({
     <Grid container item direction="column">
       <Typography>{title}</Typography>
       <Grid container item alignItems="center" columnSpacing={2} wrap="nowrap">
-        {values.map((value: any) => {
+        {values.map(value => {
           const parsedValue = parseValue(value)
           return (
             <Grid item key={value}>

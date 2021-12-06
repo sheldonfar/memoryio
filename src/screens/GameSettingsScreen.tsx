@@ -1,16 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import makeStyles from '@mui/styles/makeStyles'
 import { Grid, Typography, Button, Paper } from '@mui/material'
 
 import { Theme, PlayerCounts, GridSizes, GameSettings } from '../hooks/useGameSettings'
 import SettingsSection from '../components/SettingsSection'
-
-const useStyles = makeStyles(() => ({
-  root: {
-
-  },
-}), { name: 'GameSettingsScreen' })
 
 interface GameSettingsScreenProps {
   gameSettings: GameSettings;
@@ -19,7 +12,6 @@ interface GameSettingsScreenProps {
 const GameSettingsScreen = ({
   gameSettings,
 }: GameSettingsScreenProps) => {
-  const classes = useStyles()
   const navigate = useNavigate()
 
   const handleStart = () => {
@@ -28,7 +20,7 @@ const GameSettingsScreen = ({
   }
 
   return (
-    <Grid container item alignItems="center" className={classes.root} direction="column" justifyContent="center" p={3}>
+    <Grid container item alignItems="center" direction="column" justifyContent="center" p={3}>
       <Typography mb={2}>MemoryIO</Typography>
       <Paper elevation={3}>
         <Grid container item direction="column" p={2} rowSpacing={2}>
