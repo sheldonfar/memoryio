@@ -10,6 +10,7 @@ import useNodeWidth from '../hooks/useNodeWidth'
 import { splitEvery } from '../utils'
 import { generateTiles, Tile, tilesEqual, tilesMatch } from '../utils/tileUtils'
 import GameResultsModal from '../components/GameResultsModal'
+import useGameManager from '../hooks/useGameManager'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -59,45 +60,38 @@ const GameScreen = ({
 
   const [firstSelectedTile, setFirstSelectedTile] = useState<Tile>()
   const [secondSelectedTile, setSecondSelectedTile] = useState<Tile>()
-  const [guessedTiles, setGuessedTiles] = useState<Tile[]>([])
   const [tiles, setTiles] = useState(generateTiles(gameSettings))
-  const [gameStarted, setGameStarted] = useState(false)
-  const [moveCount, setMoveCount] = useState(0)
   const [winModalOpen, setWinModalOpen] = useState(false)
-  const [scores, setScores] = useState(Array(playerCount).fill(0))
-  const [turn, setTurn] = useState(0)
 
   const containerWidth = useNodeWidth(containerRef)
   const timer = useTimer()
+  const gameManager = useGameManager(gameSettings)
 
   const rows = splitEvery(gridSize[0], tiles)
   const isSinglePlayer = playerCount === 1
 
   useTimeout(() => {
     if (secondSelectedTile) {
-      setTurn(turn === playerCount - 1 ? 0 : turn + 1)
+      gameManager.nextTurn()
       setFirstSelectedTile(undefined)
       setSecondSelectedTile(undefined)
     }
   }, secondSelectedTile ? 500 : null)
 
   useEffect(() => {
-    // game won
-    if (guessedTiles.length === tiles.length) {
+    if (gameManager.gameWon) {
       timer.stop()
       setWinModalOpen(true)
     }
-  }, [guessedTiles.length])
+  }, [gameManager.gameWon]) 
 
   const handleRestart = () => {
     timer.reset()
+    gameManager.reset()
     setWinModalOpen(false)
     setFirstSelectedTile(undefined)
     setSecondSelectedTile(undefined)
     setTiles(generateTiles(gameSettings))
-    setGuessedTiles([])
-    setGameStarted(false)
-    setMoveCount(0)
   }
 
   const handleNewGame = () => {
@@ -111,20 +105,15 @@ const GameScreen = ({
       return
     }
 
-    setMoveCount(moveCount + 1)
-
-    if (!gameStarted) {
-      setGameStarted(true)
+    if (!gameManager.gameStarted) {
       timer.start()
     }
 
+    gameManager.performMove()
+
     if (firstSelectedTile) {
       if (tilesMatch(firstSelectedTile, tile)) {
-        const newScores = [...scores]
-        newScores[turn] = scores[turn] + 1
-
-        setScores(newScores)
-        setGuessedTiles([...guessedTiles, firstSelectedTile, tile])
+        gameManager.score(firstSelectedTile, tile)
         setFirstSelectedTile(undefined)
       } else {
         setSecondSelectedTile(tile)
@@ -158,7 +147,7 @@ const GameScreen = ({
                 const size = (containerWidth / gridSize[1] - 16)
                 const isFirstTile = tilesEqual(firstSelectedTile, tile)
                 const isSecondTile = tilesEqual(secondSelectedTile, tile)
-                const guessed = guessedTiles.some(guessedTile => tilesEqual(guessedTile, tile))
+                const guessed = gameManager.guessedTiles.some(guessedTile => tilesEqual(guessedTile, tile))
                 const selected = isFirstTile || isSecondTile
 
                 return (
@@ -193,12 +182,12 @@ const GameScreen = ({
                   </Grid>
                   <Grid container item className={classes.infoContainer} direction="column" px={6} py={1} width="auto">
                     <Typography align="center" variant="body2">Moves</Typography>
-                    <Typography align="center" variant="body1">{moveCount}</Typography>
+                    <Typography align="center" variant="body1">{gameManager.moveCount}</Typography>
                   </Grid>
                 </>
               )
-              : scores.map((_, i) => {
-                const active = i === turn
+              : gameManager.scores.map((score, i) => {
+                const active = i === gameManager.turn
                 return (
                   <Grid 
                     container 
@@ -211,7 +200,7 @@ const GameScreen = ({
                     width="auto"
                   >
                     <Typography align="center" color="inherit" variant="body2">Player {i + 1}</Typography>
-                    <Typography align="center" color="inherit" variant="body1">{scores[i]}</Typography>
+                    <Typography align="center" color="inherit" variant="body1">{score}</Typography>
                   </Grid>
                 )
               })
@@ -224,9 +213,9 @@ const GameScreen = ({
         gameSettings={gameSettings}
         handleNewGame={handleNewGame}
         handleRestart={handleRestart}
-        moveCount={moveCount}
+        moveCount={gameManager.moveCount}
         open={winModalOpen}
-        scores={scores}
+        scores={gameManager.scores}
         onClose={(_, reason) => {
           if (reason !== 'backdropClick') {
             setWinModalOpen(false)
